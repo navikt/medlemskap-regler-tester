@@ -1,0 +1,36 @@
+.App {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.box {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.formitems {
+  display: flex;
+  flex-direction: column;
+}
+
+.statsborgerskap {
+  background-color: papayawhip;
+}
+
+.personstatus {
+  background-color: aqua;
+}
+
+.adresse {
+  background-color: chartreuse;
+}
+
+.regelavklaring {
+  background-color: cornflowerblue;
+}
+
+.evaluering {
+  background-color: darksalmon;
+  grid-column: 1 / span 3;
+}
