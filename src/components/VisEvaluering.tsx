@@ -15,12 +15,12 @@ function VisEvaluering(props: Props) {
         );
     }
 
-    const json = JSON.stringify(props.evaluering);
+    const json = JSON.stringify(props.evaluering, null, 4);
 
     return (
-        <div>
+        <pre>
             {json}
-        </div>
+        </pre>
     );
 }
 

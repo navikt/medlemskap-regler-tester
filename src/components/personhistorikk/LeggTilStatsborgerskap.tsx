@@ -1,7 +1,8 @@
 import React from "react";
-import {Field, Form, FormikErrors, FormikProps, withFormik} from "formik";
-import {Statsborgerskap} from "../model/regelavklaring";
-import '../App.css';
+import {Form, FormikErrors, FormikProps, withFormik} from "formik";
+import {Statsborgerskap} from "../../model/regelavklaring";
+import './Personhistorikk.css';
+import {LabeledTextField} from "../common/LabeledTextField";
 
 interface Props {
     leggTilStatsborgerskap: (statsborgerskap: Statsborgerskap) => void;
@@ -11,21 +12,15 @@ interface StatsborgerskapFormProps {
 }
 
 const InnerForm = (props: FormikProps<Statsborgerskap>)=> {
-    const {touched, errors, isSubmitting} = props;
     return (
         <Form>
-            <h1>Nytt statsborgerskap</h1>
+            <h3>Nytt statsborgerskap</h3>
 
-            <Field name="landkode" />
-            {touched.landkode && errors.landkode && <div>{errors.landkode}</div>}
+            <LabeledTextField label={"Landkode"} name={"landkode"} type={"text"} />
+            <LabeledTextField label={"Fom"} name={"fom"} type={"text"} />
+            <LabeledTextField label={"Tom"} name={"tom"} type={"text"} />
 
-            <Field name="fom" />
-            {touched.fom && errors.fom && <div>{errors.fom}</div>}
-
-            <Field name="tom" />
-            {touched.tom && errors.tom && <div>{errors.tom}</div>}
-
-            <button type="submit" disabled={isSubmitting}>
+            <button type="submit" disabled={props.isSubmitting}>
                 Legg til
             </button>
 
@@ -49,7 +44,7 @@ function LeggTilStatsborgerskap(props: Props) {
     })(InnerForm);
 
     return (
-        <div className={'statsborgerskap box'}>
+        <div className={'box'}>
             <StatsborgerskapForm />
         </div>
     );

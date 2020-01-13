@@ -1,7 +1,7 @@
 import React from "react";
 import {Field, Form, FormikErrors, FormikProps, withFormik} from "formik";
-import {Adresse} from "../model/regelavklaring";
-import '../App.css';
+import {Adresse} from "../../model/regelavklaring";
+import '../../App.css';
 
 interface FunctionProps {
     leggTilAdresse: (adresse: Adresse) => void;

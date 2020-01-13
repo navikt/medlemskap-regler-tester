@@ -1,0 +1,26 @@
+.mainPanel {
+    display: grid;
+    grid-template-columns: auto;
+    padding: 10px;
+}
+
+.box {
+    background-color: darkgray;
+    margin: 10px;
+    padding: 1px 10px 5px 10px;
+    border: 1px solid black;
+}
+
+.fomtom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fomtom > * {
+    flex-grow: 1;
+}
+
+.fomtom > :first-child {
+    margin-right: 3px;
+}
+

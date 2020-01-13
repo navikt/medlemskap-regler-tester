@@ -2,30 +2,41 @@ import React, {useState} from 'react';
 import './App.css';
 import {Evaluering} from "./model/evaluering";
 import VisEvaluering from "./components/VisEvaluering";
-import OpprettOgSendRegelavklaring from "./components/OpprettOgSendRegelavklaring";
-import {Personhistorikk, Statsborgerskap} from "./model/regelavklaring";
-import LeggTilStatsborgerskap from "./components/LeggTilStatsborgerskap";
-import LeggTilPersonstatus from "./components/LeggTilPersonstatus";
-import LeggTilAdresse from "./components/LeggTilAdresse";
+import OpprettOgSendRegelavklaring from "./components/regelavklaring/OpprettOgSendRegelavklaring";
+import {Adresse, Personstatus, Statsborgerskap} from "./model/regelavklaring";
+import ByggPersonhistorikk from "./components/personhistorikk/ByggPersonhistorikk";
 
 const App: React.FC = () => {
   const [evaluering, settEvaluering] = useState<Evaluering>();
-  const personhistorikk: Personhistorikk = {
-      statsborgerskap: [],
-      personstatuser: [],
-      bostedsadresser: [],
-      postadresser: [],
-      midlertidigAdresser: []
-  };
+  const [statsborgerskapListe, settStatsborgerskapListe] = useState<Statsborgerskap[]>([]);
+  const [personstatusListe, settPersonstatusListe] = useState<Personstatus[]>([]);
+  const [bostedsliste, settBostedsliste] = useState<Adresse[]>([]);
+  const [postadresseliste, settPostadresseliste] = useState<Adresse[]>([]);
+  const [midlertidigAdresseListe, settMidlertidigAdresseListe] = useState<Adresse[]>([]);
+
+  const leggTilStatsborgerskap = (sb: Statsborgerskap) => settStatsborgerskapListe(statsborgerskapListe.concat(sb));
+  const leggTilPersonstatus = (ps: Personstatus) => settPersonstatusListe(personstatusListe.concat(ps));
+  const leggTilBosted = (adr: Adresse) => settBostedsliste(bostedsliste.concat(adr));
+  const leggTilPostadresse = (adr: Adresse) => settPostadresseliste(postadresseliste.concat(adr));
+  const leggTilMidlertidigAdresse = (adr: Adresse) => settMidlertidigAdresseListe(midlertidigAdresseListe.concat(adr));
 
   return (
     <div className="App">
-        <LeggTilStatsborgerskap leggTilStatsborgerskap={(sb: Statsborgerskap) => {personhistorikk.statsborgerskap.push(sb)}}/>
-        <LeggTilPersonstatus leggTilPersonstatus={() => {}}/>
-        <LeggTilAdresse leggTilAdresse={() => {}} typeAdresse={'bostedsadresse'}/>
-        <LeggTilAdresse leggTilAdresse={() => {}} typeAdresse={'postadresse'}/>
-        <LeggTilAdresse leggTilAdresse={() => {}} typeAdresse={'midlertidig adresse'}/>
-        <OpprettOgSendRegelavklaring settEvaluering={settEvaluering} personhistorikk={personhistorikk} />
+        <ByggPersonhistorikk
+            leggTilStatsborgerskap={leggTilStatsborgerskap}
+            leggTilPersonstatus={leggTilPersonstatus}
+            leggTilBostedsadresse={leggTilBosted}
+            leggTilPostadresse={leggTilPostadresse}
+            leggTilMidlertidigAdresse={leggTilMidlertidigAdresse}
+        />
+        <OpprettOgSendRegelavklaring
+            settEvaluering={settEvaluering}
+            statsborgerskap={statsborgerskapListe}
+            personstatuser={personstatusListe}
+            bostedsadresser={bostedsliste}
+            postadresser={postadresseliste}
+            midlertidigeAdresser={midlertidigAdresseListe}
+        />
         <VisEvaluering evaluering={evaluering} />
     </div>
   );

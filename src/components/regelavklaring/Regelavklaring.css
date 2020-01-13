@@ -1,0 +1,9 @@
+.whiteLine {
+    padding: 3px;
+    background-color: white;
+}
+
+.grayLine {
+    padding: 3px;
+    background-color: darkgray;
+}

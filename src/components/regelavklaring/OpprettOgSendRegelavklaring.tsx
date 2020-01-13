@@ -1,15 +1,29 @@
 import React from "react";
-import {Periode, Personhistorikk, Regelavklaring} from "../model/regelavklaring";
-import {Evaluering} from "../model/evaluering";
-import {Field, Form, FormikErrors, FormikProps, useField, withFormik} from "formik";
-import '../App.css';
+import {
+    Adresse,
+    Periode,
+    Personhistorikk,
+    Personstatus,
+    Regelavklaring,
+    Statsborgerskap
+} from "../../model/regelavklaring";
+import {Evaluering} from "../../model/evaluering";
+import {Field, Form, FormikErrors, FormikProps, withFormik} from "formik";
+import '../../App.css';
+import VisStatsborgerskap from "./VisStatsborgerskap";
+import VisPersonstatus from "./VisPersonstatus";
+import VisAdresse from "./VisAdresse";
 
 interface FunctionProps {
     settEvaluering: (evaluering: Evaluering) => void;
 }
 
 interface DisplayProps {
-    personhistorikk: Personhistorikk;
+    statsborgerskap: Statsborgerskap[];
+    personstatuser: Personstatus[];
+    bostedsadresser: Adresse[];
+    postadresser: Adresse[];
+    midlertidigeAdresser: Adresse[];
 }
 
 type Props = FunctionProps & DisplayProps;
@@ -21,11 +35,15 @@ interface FormProps {
 }
 
 const InnerForm = (props: DisplayProps & FormikProps<FormProps>) => {
-    const {touched, errors, isSubmitting, personhistorikk} = props;
+    const {touched, errors, isSubmitting, statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigeAdresser} = props;
     return (
         <>
             <div>
-                {JSON.stringify(personhistorikk)}
+                <VisStatsborgerskap statsborgerskap={statsborgerskap} />
+                <VisPersonstatus personstatus={personstatuser} />
+                <VisAdresse adresse={bostedsadresser} adressetype={'Bostedsadresser'} />
+                <VisAdresse adresse={postadresser} adressetype={'Postadresser'} />
+                <VisAdresse adresse={midlertidigeAdresser} adressetype={'Midlertidige adresser'} />
             </div>
             <Form>
                 <h1>Regelavklaring</h1>
@@ -35,7 +53,7 @@ const InnerForm = (props: DisplayProps & FormikProps<FormProps>) => {
                 <Field name="soknadsperiodeFom"/>
                 {touched.soknadsperiodeFom && errors.soknadsperiodeFom && <div>{errors.soknadsperiodeFom}</div>}
 
-                <Field name="soknadstidspunkt"/>
+                <Field name="soknadsperiodeTom"/>
                 {touched.soknadsperiodeTom && errors.soknadsperiodeTom && <div>{errors.soknadsperiodeTom}</div>}
 
                 <button type="submit" disabled={isSubmitting}>
@@ -62,13 +80,21 @@ function OpprettOgSendRegelavklaring(props: Props) {
                 tom: value.soknadsperiodeTom
             };
 
+            const personhistorikk: Personhistorikk = {
+                statsborgerskap: props.statsborgerskap,
+                personstatuser: props.personstatuser,
+                bostedsadresser: props.bostedsadresser,
+                postadresser: props.postadresser,
+                midlertidigAdresser: props.midlertidigeAdresser
+            };
+
             const regelavklaring: Regelavklaring = {
                 soknadstidspunkt: value.soknadstidspunkt,
                 soknadsperiode: soknadsperiode,
-                personhistorikk: props.personhistorikk
+                personhistorikk: personhistorikk
             };
 
-            fetch('http://localhost:7070', {
+            fetch('http://localhost:7070/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +114,13 @@ function OpprettOgSendRegelavklaring(props: Props) {
 
     return (
         <div className={'regelavklaring box'}>
-            <RegelavklaringForm personhistorikk={props.personhistorikk}/>
+            <RegelavklaringForm
+                statsborgerskap={props.statsborgerskap}
+                personstatuser={props.personstatuser}
+                bostedsadresser={props.bostedsadresser}
+                postadresser={props.postadresser}
+                midlertidigeAdresser={props.midlertidigeAdresser}
+            />
         </div>
     )
 }
